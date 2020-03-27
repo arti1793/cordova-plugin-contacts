@@ -121,7 +121,8 @@ let kW3ContactUrls = "urls"
             CNContactMiddleNameKey : kW3ContactMiddleName,
             CNContactNamePrefixKey : kW3ContactHonorificPrefix,
             CNContactNameSuffixKey : kW3ContactHonorificSuffix,
-            CNContactPhoneNumbersKey : kW3ContactPhoneNumbers
+            CNContactPhoneNumbersKey : kW3ContactPhoneNumbers,
+            CNContactThumbnailImageDataKey: kW3ContactPhotos,
         ]
     }
 
@@ -154,7 +155,8 @@ let kW3ContactUrls = "urls"
             kW3ContactFieldValue : "",
             kW3ContactFieldPrimary : "",
             kW3ContactFieldId : "",
-            kW3ContactOrganizationName : CNContactOrganizationNameKey
+            kW3ContactOrganizationName : CNContactOrganizationNameKey,
+            kW3ContactPhotos: CNContactThumbnailImageDataKey,
         ]
     }
 
@@ -192,7 +194,7 @@ let kW3ContactUrls = "urls"
             kW3ContactPhotos : CDVContact.defaultObjectAndProperties()[kW3ContactPhotos]!,
             kW3ContactUrls : CDVContact.defaultObjectAndProperties()[kW3ContactUrls]!,
             kW3ContactBirthday : [],
-            kW3ContactNote : []
+            kW3ContactNote : [],
         ]
     }
 
@@ -998,6 +1000,12 @@ let kW3ContactUrls = "urls"
             value = extractMultiValue(kW3ContactPhoneNumbers)
             if value != nil {
                 nc[kW3ContactPhoneNumbers] = value
+            }
+            
+            if fields[kW3ContactPhotos] != nil {
+                if self.nonMutableRecord?.imageDataAvailable ?? false {
+                    nc[kW3ContactPhotos] = self.extractPhotos();
+                }
             }
             return nc
         } else {
