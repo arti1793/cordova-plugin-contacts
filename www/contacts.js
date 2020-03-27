@@ -19,19 +19,29 @@
  *
 */
 
-var argscheck = require('cordova/argscheck'),
-    exec = require('cordova/exec'),
-    ContactError = require('./ContactError'),
-    Contact = require('./Contact'),
-    fieldType = require('./ContactFieldType'),
-    convertUtils = require('./convertUtils');
+const argscheck = require('cordova/argscheck');
+
+    
+const exec = require('cordova/exec');
+
+    
+const ContactError = require('./ContactError');
+
+    
+const Contact = require('./Contact');
+
+    
+const fieldType = require('./ContactFieldType');
+
+    
+const convertUtils = require('./convertUtils');
 
 /**
 * Represents a group of Contacts.
 * @constructor
 */
 var contacts = {
-    fieldType: fieldType,
+    fieldType,
     /**
      * Returns an array of Contacts matching the search criteria.
      * @param fields that should be searched
@@ -40,7 +50,7 @@ var contacts = {
      * @param {ContactFindOptions} options that can be applied to contact searching
      * @return array of Contacts matching search criteria
      */
-    find: function(fields, successCB, errorCB, options) {
+    find(fields, successCB, errorCB, options) {
         argscheck.checkArgs('afFO', 'contacts.find', arguments);
         if (!fields.length) {
             if (errorCB) {
@@ -49,9 +59,9 @@ var contacts = {
         } else {
             // missing 'options' param means return all contacts
             options = options || { filter: '', multiple: true };
-            var win = function(result) {
-                var cs = [];
-                for (var i = 0, l = result.length; i < l; i++) {
+            const win = function(result) {
+                const cs = [];
+                for (let i = 0, l = result.length; i < l; i++) {
                     cs.push(convertUtils.toCordovaFormat(contacts.create(result[i])));
                 }
                 successCB(cs);
@@ -59,22 +69,47 @@ var contacts = {
             exec(win, errorCB, "Contacts", "search", [fields, options]);
         }
     },
-    
+
+    checkPermission(successCB, errorCB) {
+        exec(successCB, errorCB, "Contacts", "checkPermission");
+    },
+
     /**
      * This function picks contact from phone using contact picker UI
      * @returns new Contact object
      */
-    pickContact: function (successCB, errorCB) {
+    pickContact (fields, successCB, errorCB, options) {
 
-        argscheck.checkArgs('fF', 'contacts.pick', arguments);
+        argscheck.checkArgs('afFO', 'contacts.pick', arguments);
 
-        var win = function (result) {
+        const win = function (result) {
             // if Contacts.pickContact return instance of Contact object
             // don't create new Contact object, use current
-            var contact = result instanceof Contact ? result : contacts.create(result);
+            const contact = result instanceof Contact ? result : contacts.create(result);
             successCB(convertUtils.toCordovaFormat(contact));
         };
-        exec(win, errorCB, "Contacts", "pickContact", []);
+        exec(win, errorCB, "Contacts", "pickContact", [fields, options]);
+    },
+
+    /**
+     * This function picks contact from phone using contact picker UI
+     * @returns new Contact object
+     */
+    pickContacts (fields, successCB, errorCB, options) {
+
+        argscheck.checkArgs('afFO', 'contacts.pick', arguments);
+
+        const win = function (results) {
+            results.map((result) => {
+                // if Contacts.pickContact return instance of Contact object
+                // don't create new Contact object, use current
+                const contact = result instanceof Contact ? result : contacts.create(result);
+                return convertUtils.toCordovaFormat(contact);
+            });
+
+            successCB(results);
+        };
+        exec(win, errorCB, "Contacts", "pickContact", [fields, options]);
     },
 
     /**
@@ -84,10 +119,10 @@ var contacts = {
      * @param properties an object whose properties will be examined to create a new Contact
      * @returns new Contact object
      */
-    create: function(properties) {
+    create(properties) {
         argscheck.checkArgs('O', 'contacts.create', arguments);
-        var contact = new Contact();
-        for (var i in properties) {
+        const contact = new Contact();
+        for (const i in properties) {
             if (typeof contact[i] !== 'undefined' && properties.hasOwnProperty(i)) {
                 contact[i] = properties[i];
             }
