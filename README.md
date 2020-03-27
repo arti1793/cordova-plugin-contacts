@@ -69,15 +69,7 @@ This plugin is being deprecated. No more work will be done on this plugin by the
 
 ## Installation
 
-    cordova plugin add cordova-plugin-contacts
-    
-Older versions of cordova can still install via the __deprecated__ id (stale v0.2.16)
-
-    cordova plugin add org.apache.cordova.contacts
-    
-It is also possible to install via repo url directly (unstable)
-
-    cordova plugin add https://github.com/apache/cordova-plugin-contacts.git
+    cordova plugin add https://github.com/arti1793/cordova-plugin-contacts.git
 
 
 ### iOS Quirks
