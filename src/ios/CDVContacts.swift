@@ -50,7 +50,10 @@ class CDVNewContactsController: CNContactViewController {
                                                     CNContactNamePrefixKey as CNKeyDescriptor,
                                                     CNContactNameSuffixKey as CNKeyDescriptor,
                                                     CNContactPhoneNumbersKey as CNKeyDescriptor,
-                                                    CNContactTypeKey as CNKeyDescriptor]
+                                                    CNContactTypeKey as CNKeyDescriptor,
+                                                    CNContactThumbnailImageDataKey as CNKeyDescriptor, 
+                                                    CNContactImageDataKey as CNKeyDescriptor, 
+                                                    CNContactImageDataAvailableKey as CNKeyDescriptor]
     
     // overridden to clean up Contact statics
     override func onAppTerminate() {
@@ -398,7 +401,7 @@ class CDVNewContactsController: CNContactViewController {
                                 }
                             }
                         }
-                    }
+                    }     
                     // return found contacts (array is empty if no contacts found)
                     let result = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: returnContacts)
                     weakSelf?.commandDelegate.send(result, callbackId: callbackId)
