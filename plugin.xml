@@ -24,17 +24,17 @@
     xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest"
     xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
     id="cordova-plugin-contacts"
-    version="3.0.2-dev">
+    version="3.2.1">
 
     <name>Contacts</name>
     <description>Cordova Contacts Plugin</description>
     <license>Apache 2.0</license>
     <keywords>cordova,contacts</keywords>
-    <repo>https://git-wip-us.apache.org/repos/asf/cordova-plugin-contacts.git</repo>
-    <issue>https://issues.apache.org/jira/browse/CB/component/12320652</issue>
+    <repo>https://github.com/arti1793/cordova-plugin-contacts.git</repo>
+    <issue>https://github.com/arti1793/cordova-plugin-contacts/issues</issue>
 
     <engines>
-        <engine name="cordova-android" version=">=6.3.0" />
+        <engine name="cordova-android" version=">=6.2.2" />
     </engines>
 
     <js-module src="www/contacts.js" name="contacts">
@@ -137,19 +137,25 @@
         <js-module src="www/ios/contacts.js" name="contacts-ios">
             <merges target="navigator.contacts" />
         </js-module>
+		
+		<preference name="CONTACTS_USAGE_DESCRIPTION" default=" " />
+		<config-file target="*-Info.plist" parent="NSContactsUsageDescription">
+			<string>$CONTACTS_USAGE_DESCRIPTION</string>
+		</config-file>
 
         <js-module src="www/ios/Contact.js" name="Contact-iOS">
             <merges target="Contact" />
         </js-module>
+		
+		<header-file src="src/ios/CDVContacts-Bridging-Header.h"/>
+		<source-file src="src/ios/CDVContacts.swift" />
+        <source-file src="src/ios/CDVContact.swift" />
 
-        <header-file src="src/ios/CDVContacts.h" />
-        <source-file src="src/ios/CDVContacts.m" />
-        <header-file src="src/ios/CDVContact.h" />
-        <source-file src="src/ios/CDVContact.m" />
-
-        <framework src="AddressBook.framework" weak="true" />
-        <framework src="AddressBookUI.framework" weak="true" />
+        <framework src="Contacts.framework" weak="true" />
+        <framework src="ContactsUI.framework" weak="true" />
         <framework src="CoreGraphics.framework" />
+		
+		<dependency id="cordova-plugin-add-swift-support" version="2.0.2"/>
     </platform>
 
     <!-- Browser -->
